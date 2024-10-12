@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:wolkup_app/features/profile/presentation/states/profile.dart';
+import 'package:wolkup_app/features/auth/presentation/states/auth.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends ConsumerWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -12,7 +14,7 @@ class ProfilePage extends ConsumerWidget {
 
     final nameController = TextEditingController(text: profile.fullName ?? '');
 
-    // Fonction pour sélectionner une image
+    // Function to select an image
     Future<void> _pickImage() async {
       final picker = ImagePicker();
       final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -86,9 +88,18 @@ class ProfilePage extends ConsumerWidget {
             ElevatedButton(
               onPressed: () => _confirmDeleteAccount(context, ref),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red, // Bouton rouge pour la suppression
+                backgroundColor: Colors.red,
               ),
               child: const Text('Supprimer le compte'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: () {
+                ref.read(authProvider.notifier).logout();
+                context.go('/login'); // Redirect to login page after logout
+              },
+              icon: const Icon(Icons.logout),
+              label: const Text('Logout'),
             ),
           ],
         ),
@@ -96,7 +107,7 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
-  // Méthode _deleteAccount définie ici
+  // _deleteAccount method here
   Future<void> _deleteAccount(BuildContext context, WidgetRef ref) async {
     final result = await ref.read(profileProvider.notifier).deleteAccount();
 
@@ -104,7 +115,7 @@ class ProfilePage extends ConsumerWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Compte supprimé avec succès')),
       );
-      Navigator.of(context).pushReplacementNamed('/login');
+      context.go('/login'); // Redirect to login after account deletion
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(result)),
@@ -112,7 +123,7 @@ class ProfilePage extends ConsumerWidget {
     }
   }
 
-  // Confirmation avant suppression du compte
+  // Confirmation before account deletion
   void _confirmDeleteAccount(BuildContext context, WidgetRef ref) {
     showDialog(
       context: context,
@@ -124,14 +135,14 @@ class ProfilePage extends ConsumerWidget {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Fermer la boîte de dialogue
+                Navigator.of(context).pop(); // Close dialog
               },
               child: const Text('Annuler'),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Fermer la boîte de dialogue
-                _deleteAccount(context, ref); // Appeler _deleteAccount
+                Navigator.of(context).pop(); // Close dialog
+                _deleteAccount(context, ref); // Call _deleteAccount
               },
               child: const Text('Confirmer'),
             ),
