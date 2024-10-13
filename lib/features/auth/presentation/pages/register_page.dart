@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wolkup_app/core/core.dart';
-import 'package:wolkup_app/core/ui/ui.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:modular_ui/modular_ui.dart';
 import 'package:wolkup_app/features/auth/auth.dart';
+import 'auth_tabs.dart'; // Ensure AuthTabs is imported
+import 'package:wolkup_app/core/core.dart'; // Import the core package
 
 class RegisterPage extends HookConsumerWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+  const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,7 +17,6 @@ class RegisterPage extends HookConsumerWidget {
     final displayNameController = useTextEditingController(text: '');
     final register = useState<Future<void>?>(null);
     final registerSnap = useFuture(register.value);
-    final auth = ref.watch(authProvider);
 
     return Scaffold(
       body: Padding(
@@ -24,73 +24,88 @@ class RegisterPage extends HookConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: context.height * 0.24),
-            Text('Register', style: context.textTheme.headlineMedium),
-            const SizedBox(height: 20),
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-              ),
-            ),
-            TextField(
-              controller: passwordController,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-              ),
-              obscureText: true,
-            ),
-            TextField(
-              controller: displayNameController,
-              decoration: const InputDecoration(
-                labelText: 'Display Name',
-              ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: registerSnap.isWaiting
-                  ? null
-                  : () async {
-                      final result =
-                          await ref.read(authProvider.notifier).register(
-                                emailController.text,
-                                passwordController.text,
-                                displayNameController.text,
-                              );
+            const SizedBox(height: 50),
 
-                      if (result == null) {
-                        // Registration successful, navigate to home
-                        context.go('/');
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('Registration Successful')),
-                        );
-                      } else {
-                        // Show error message
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content:
-                                  Text(result)), // Show error from authProvider
-                        );
-                      }
-                    },
-              child: BtnChild(
-                loading: registerSnap.isWaiting,
-                child: const Text('Register'),
+            // AuthTabs widget to switch between Login and Register
+            const AuthTabs(initialIndex: 1), // 1 for Register
+
+            const SizedBox(height: 20),
+
+            // Modular UI Input Fields
+            MUIPrimaryInputField(
+              controller: emailController,
+              hintText: 'Enter your email',
+              filledColor: Colors.white,
+              borderRadius: 8.0,
+              borderWidth: 1.5,
+              enabledBorderColor: Colors.black,
+              prefixIcon: const Icon(Icons.email, color: Colors.black),
+            ),
+            const SizedBox(height: 16),
+            MUIPrimaryInputField(
+              controller: passwordController,
+              hintText: 'Enter your password',
+              isObscure: true,
+              filledColor: Colors.white,
+              borderRadius: 8.0,
+              borderWidth: 1.5,
+              enabledBorderColor: Colors.black,
+              prefixIcon: const Icon(Icons.lock, color: Colors.black),
+            ),
+            const SizedBox(height: 16),
+            MUIPrimaryInputField(
+              controller: displayNameController,
+              hintText: 'Enter your display name',
+              filledColor: Colors.white,
+              borderRadius: 8.0,
+              borderWidth: 1.5,
+              enabledBorderColor: Colors.black,
+              prefixIcon: const Icon(Icons.person, color: Colors.black),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Modular UI Primary Button
+            Center(
+              child: SizedBox(
+                width: double.infinity,
+                child: MUIPrimaryButton(
+                  text: 'Register',
+                  onPressed: () {
+                    if (!registerSnap.isWaiting) {
+                      register.value = ref.read(authProvider.notifier).register(
+                            emailController.text,
+                            passwordController.text,
+                            displayNameController.text,
+                          );
+                    }
+                  },
+                  bgColor: Colors.black,
+                  textColor: Colors.white,
+                  borderRadius: 8.0,
+                  hapticsEnabled: true,
+                  leadingIcon: registerSnap.isWaiting ? null : Icons.person_add,
+                ),
               ),
             ),
             const SizedBox(height: 20),
-            // Add a button to navigate to the Login page
+
+            // Login navigation
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text("Déjà un compte ?"),
+                const Text("Already have an account?"),
                 TextButton(
                   onPressed: () {
-                    // Navigate back to the login page
                     context.go('/login');
                   },
-                  child: const Text('Se connecter'),
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
                 ),
               ],
             ),
