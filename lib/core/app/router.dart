@@ -6,8 +6,6 @@ import 'package:wolkup_app/features/auth/auth.dart';
 import 'package:wolkup_app/features/auth/presentation/pages/login_page.dart';
 import 'package:wolkup_app/features/auth/presentation/pages/register_page.dart';
 import 'package:wolkup_app/features/auth/presentation/states/auth.dart';
-import 'package:wolkup_app/features/home/home.dart';
-import 'package:wolkup_app/features/profile/profile.dart';
 import 'package:wolkup_app/core/ui/ui.dart';
 import 'router_notifier.dart';
 

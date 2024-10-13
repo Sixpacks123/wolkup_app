@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:wolkup_app/features/home/presentation/pages/home_page.dart';
+import 'package:wolkup_app/features/maps/maps.dart';
 import 'package:wolkup_app/features/profile/presentation/pages/profile_page.dart';
 
 class AppLayout extends StatefulWidget {
-  const AppLayout({Key? key}) : super(key: key);
+  const AppLayout({super.key});
 
   @override
   _AppLayoutState createState() => _AppLayoutState();
@@ -24,9 +25,10 @@ class _AppLayoutState extends State<AppLayout> {
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
-        children: const [
-          HomePage(),
-          ProfilePage(),
+        children: [
+          MapPage(),
+          const HomePage(),
+          const ProfilePage(),
         ],
       ),
       bottomNavigationBar: Container(
@@ -54,6 +56,11 @@ class _AppLayoutState extends State<AppLayout> {
                 FontWeight.bold, // Texte en gras pour l'élément sélectionné
           ),
           items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.map_outlined, size: 28),
+              activeIcon: Icon(Icons.map, size: 28),
+              label: 'Maps',
+            ),
             BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined, size: 28),
               activeIcon: Icon(Icons.home, size: 28),
