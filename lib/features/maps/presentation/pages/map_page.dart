@@ -4,7 +4,9 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:wolkup_app/features/maps/presentation/states/map_state_provider.dart';
+import 'package:wolkup_app/features/maps/presentation/widgets/center_location_button.dart';
 import 'package:wolkup_app/features/maps/presentation/widgets/signal_button.dart';
+import 'package:wolkup_app/features/maps/presentation/widgets/map_view.dart';
 
 class MapPage extends ConsumerStatefulWidget {
   const MapPage({Key? key}) : super(key: key);
@@ -20,14 +22,21 @@ class _MapPageState extends ConsumerState<MapPage> {
   void initState() {
     super.initState();
     _mapController = MapController();
-    _setInitialPosition(); // Centre la carte sur la position actuelle
+    _setInitialPosition();
   }
 
   Future<void> _setInitialPosition() async {
     final initialPosition =
     await ref.read(mapStateProvider.notifier).getCurrentPosition();
     if (initialPosition != null) {
-      _mapController.move(initialPosition, 13); // Centrer la carte initialement
+      _mapController.move(initialPosition, 13);
+    }
+  }
+
+  void _centerMapOnUser() {
+    final userPosition = ref.read(mapStateProvider);
+    if (userPosition != null) {
+      _mapController.move(userPosition, 13);
     }
   }
 
@@ -40,37 +49,15 @@ class _MapPageState extends ConsumerState<MapPage> {
           ? const Center(child: CircularProgressIndicator())
           : Stack(
         children: [
-          FlutterMap(
+          MapView(
             mapController: _mapController,
-            options: MapOptions(
-              initialCenter: currentPosition,
-              initialZoom: 13,
-              onTap: (tapPosition, point) {
-                debugPrint(
-                    'Tapped at: ${point.latitude}, ${point.longitude}');
-              },
-            ),
-            children: [
-              TileLayer(
-                urlTemplate:
-                'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-                subdomains: ['a', 'b', 'c'],
-              ),
-              MarkerLayer(
-                markers: [
-                  Marker(
-                    point: currentPosition,
-                    width: 30, // Largeur du marqueur
-                    height: 30, // Hauteur du marqueur
-                    child: const Icon(
-                      Icons.location_on,
-                      color: Colors.red,
-                      size: 30,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+            initialCenter: currentPosition,
+            initialZoom: 13.0,
+          ),
+          Positioned(
+            bottom: 80,
+            right: 16,
+            child: CenterLocationButton(onPressed: _centerMapOnUser),
           ),
           Positioned(
             bottom: 16,
