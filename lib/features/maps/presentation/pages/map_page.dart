@@ -7,6 +7,7 @@ import 'package:wolkup_app/features/maps/presentation/states/map_state_provider.
 import 'package:wolkup_app/features/maps/presentation/widgets/center_location_button.dart';
 import 'package:wolkup_app/features/maps/presentation/widgets/signal_button.dart';
 import 'package:wolkup_app/features/maps/presentation/widgets/map_view.dart';
+import 'package:wolkup_app/features/maps/presentation/widgets/poi_data.dart';
 
 class MapPage extends ConsumerStatefulWidget {
   const MapPage({Key? key}) : super(key: key);
@@ -53,6 +54,7 @@ class _MapPageState extends ConsumerState<MapPage> {
             mapController: _mapController,
             initialCenter: currentPosition,
             initialZoom: 13.0,
+            pois: [...monuments, ...trashCans, ...parks], // Ajoute tous les POI
           ),
           Positioned(
             bottom: 80,
