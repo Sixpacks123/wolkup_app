@@ -3,8 +3,9 @@ import 'dart:io';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:wolkup_app/core/core.dart';
-import 'package:wolkup_app/features/auth/auth.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../domain/app_user.dart';
 
 part 'auth.g.dart';
 

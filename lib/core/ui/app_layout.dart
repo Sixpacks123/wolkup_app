@@ -48,12 +48,12 @@ class _AppLayoutState extends State<AppLayout> {
           backgroundColor: Colors.white, // Couleur de fond
           type: BottomNavigationBarType.fixed,
           selectedItemColor:
-              Colors.blueAccent, // Couleur de l'élément sélectionné
+              Colors.blueAccent,
           unselectedItemColor:
-              Colors.grey, // Couleur des éléments non sélectionnés
+              Colors.grey,
           selectedLabelStyle: const TextStyle(
             fontWeight:
-                FontWeight.bold, // Texte en gras pour l'élément sélectionné
+                FontWeight.bold,
           ),
           items: const [
             BottomNavigationBarItem(
