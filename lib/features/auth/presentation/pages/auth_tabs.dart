@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:modular_ui/modular_ui.dart';
 
 class AuthTabs extends StatelessWidget {
   final ValueNotifier<int> selectedIndex;
@@ -13,13 +12,15 @@ class AuthTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MUITabs.underlined(
-      tabIndex: selectedIndex.value,
-      onChanged: onTabChanged,
-      tabs: [
-        MUITab(label: "Login"),
-        MUITab(label: "Register"),
+    return TabBar(
+      indicatorColor: Colors.blue,
+      labelColor: Colors.blue,
+      unselectedLabelColor: Colors.grey,
+      tabs: const [
+        Tab(text: "Login"),
+        Tab(text: "Register"),
       ],
+      onTap: onTabChanged,
     );
   }
 }

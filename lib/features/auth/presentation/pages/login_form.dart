@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:modular_ui/modular_ui.dart';
-import 'package:wolkup_app/core/core.dart';
-import 'package:wolkup_app/features/auth/auth.dart';
+
+import '../states/auth.dart';
 
 class LoginForm extends HookConsumerWidget {
   final VoidCallback onSwitch;
@@ -14,43 +13,43 @@ class LoginForm extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
-    final loginSnap = useFuture(useState<Future<void>?>(null).value);
 
     return Column(
       children: [
-        MUIPrimaryInputField(
+        TextField(
           controller: emailController,
-          hintText: 'Enter your email',
-          prefixIcon: const Icon(Icons.email, color: Colors.black), filledColor: Colors.white,
+          decoration: const InputDecoration(
+            hintText: 'Enter your email',
+            prefixIcon: Icon(Icons.email, color: Colors.black),
+            filled: true,
+            fillColor: Colors.white,
+          ),
         ),
         const SizedBox(height: 16),
-        MUIPrimaryInputField(
+        TextField(
           controller: passwordController,
-          hintText: 'Enter your password',
-          isObscure: true,
-          prefixIcon: const Icon(Icons.lock, color: Colors.black), filledColor: Colors.white,
-        ),
-        const SizedBox(height: 20),
-        Center(
-          child: SizedBox(
-            width: double.infinity, // Prend toute la largeur disponible
-            child: MUIPrimaryButton(
-              text: 'Login',
-              onPressed: () {
-                if (!loginSnap.isWaiting) {
-                  ref.read(authProvider.notifier).login(
-                    emailController.text,
-                    passwordController.text,
-                  );
-                }
-              },
-            ),
+          obscureText: true,
+          decoration: const InputDecoration(
+            hintText: 'Enter your password',
+            prefixIcon: Icon(Icons.lock, color: Colors.black),
+            filled: true,
+            fillColor: Colors.white,
           ),
         ),
         const SizedBox(height: 20),
-
-
-        // Texte pour rediriger vers Register
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              ref.read(authProvider.notifier).login(
+                emailController.text,
+                passwordController.text,
+              );
+            },
+            child: const Text('Login'),
+          ),
+        ),
+        const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
