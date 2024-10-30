@@ -1,6 +1,6 @@
 # **Wolkup App**
 
-
+![logo](https://github.com/user-attachments/assets/7bad09b4-7dac-4f19-bda8-c30b6de74b9e)
 **Wolkup** est une application mobile innovante permettant aux citoyens de signaler des problèmes dans les espaces publics, comme des déchets, des infrastructures urbaines défectueuses ou dangereuses. Elle propose une interface moderne avec une carte interactive, permet de localiser des points de collecte, et propose une expérience gamifiée en récompensant les utilisateurs avec des points échangeables contre des cadeaux offerts par les partenaires locaux.
 
 ---
@@ -13,7 +13,8 @@
 - **Suivi en temps réel** : Localisation en temps réel des utilisateurs avec affichage de leur position sur la carte.
 - **Signalement facile** : Ajout rapide de signalements via un bouton intégré directement sur la carte.
 
----
+-
+--
 
 ## 🛠️ **Technologie Stack**
 
