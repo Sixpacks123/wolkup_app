@@ -20,20 +20,17 @@ class LoginForm extends HookConsumerWidget {
           controller: emailController,
           decoration: const InputDecoration(
             hintText: 'Enter your email',
+            labelText: 'Email',
             prefixIcon: Icon(Icons.email, color: Colors.black),
-            filled: true,
-            fillColor: Colors.white,
           ),
         ),
         const SizedBox(height: 16),
         TextField(
           controller: passwordController,
-          obscureText: true,
           decoration: const InputDecoration(
             hintText: 'Enter your password',
+            labelText: 'Password',
             prefixIcon: Icon(Icons.lock, color: Colors.black),
-            filled: true,
-            fillColor: Colors.white,
           ),
         ),
         const SizedBox(height: 20),

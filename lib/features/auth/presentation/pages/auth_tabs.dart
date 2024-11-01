@@ -13,9 +13,6 @@ class AuthTabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TabBar(
-      indicatorColor: Colors.blue,
-      labelColor: Colors.blue,
-      unselectedLabelColor: Colors.grey,
       tabs: const [
         Tab(text: "Login"),
         Tab(text: "Register"),

@@ -1,10 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:wolkup_app/core/core.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'package:wolkup_app/core/resources/lib/supabase.dart';
 import '../../domain/app_user.dart';
 
 part 'auth.g.dart';
