@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class BtnChild extends StatelessWidget {
   const BtnChild({
-    Key? key,
+    super.key,
     required this.loading,
     this.color,
     this.size = 14,
     required this.child,
-  }) : super(key: key);
+  });
 
   final bool loading;
   final Widget child;
