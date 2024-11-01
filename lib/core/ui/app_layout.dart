@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wolkup_app/features/home/presentation/pages/home_page.dart';
 import 'package:wolkup_app/features/maps/maps.dart';
-import 'package:wolkup_app/features/profile/presentation/pages/profile_page.dart';
+import '../../features/profile/presentation/pages/user_profile_page.dart';
+import '../../features/reporting/presentation/pages/report_status_page.dart';
 
 class AppLayout extends StatefulWidget {
   const AppLayout({super.key});
@@ -25,10 +25,10 @@ class _AppLayoutState extends State<AppLayout> {
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
-        children: [
+        children: const [
           MapPage(),
-          const HomePage(),
-          const ProfilePage(),
+          UserReportStatusPage(),
+          UserProfilePage(), // Assurez-vous que cette page est correcte
         ],
       ),
       bottomNavigationBar: Container(
@@ -47,14 +47,9 @@ class _AppLayoutState extends State<AppLayout> {
           onTap: _onItemTapped,
           backgroundColor: Colors.white, // Couleur de fond
           type: BottomNavigationBarType.fixed,
-          selectedItemColor:
-              Colors.blueAccent,
-          unselectedItemColor:
-              Colors.grey,
-          selectedLabelStyle: const TextStyle(
-            fontWeight:
-                FontWeight.bold,
-          ),
+          selectedItemColor: Colors.blueAccent,
+          unselectedItemColor: Colors.grey,
+          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.map_outlined, size: 28),
@@ -62,9 +57,9 @@ class _AppLayoutState extends State<AppLayout> {
               label: 'Maps',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined, size: 28),
-              activeIcon: Icon(Icons.home, size: 28),
-              label: 'Home',
+              icon: Icon(Icons.flag, size: 28),
+              activeIcon: Icon(Icons.flag, size: 28),
+              label: 'Signal',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_outline, size: 28),
