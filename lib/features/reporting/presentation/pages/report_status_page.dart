@@ -15,62 +15,103 @@ class _UserReportStatusPageState extends ConsumerState<UserReportStatusPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Charger les rapports lorsque la page est affichée
     ref.read(reportProvider.notifier).loadReports();
   }
 
   @override
   Widget build(BuildContext context) {
     final reportsAsyncValue = ref.watch(reportProvider);
-    final statusesAsyncValue = ref.watch(statusProvider); // Charger les statuts
+    final statusesAsyncValue = ref.watch(statusProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Mes Signalements"),
+        title: const Text("Mes Signalements", style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.transparent, // AppBar transparente pour se fondre avec le thème noir
+        elevation: 0,
       ),
-      body: reportsAsyncValue.when(
-        data: (reports) {
-          final userReports = reports.where((report) => report.user_id == ref.read(authProvider).uid).toList();
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: reportsAsyncValue.when(
+          data: (reports) {
+            final userReports = reports
+                .where((report) => report.user_id == ref.read(authProvider).uid)
+                .toList();
 
-          if (userReports.isEmpty) {
-            return const Center(child: Text("Aucun signalement trouvé."));
-          }
-
-          return statusesAsyncValue.when(
-            data: (statuses) {
-              return ListView.builder(
-                itemCount: userReports.length,
-                itemBuilder: (context, index) {
-                  final report = userReports[index];
-                  final statusName = statuses
-                      .firstWhere((status) => status.id == report.status_id)
-                      .name; // Associe le status_id avec le nom
-
-                  return Card(
-                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: ListTile(
-                      title: Text(report.description),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Status: $statusName"), // Affiche le nom du statut
-                          Text("Date: ${report.timestamp.toLocal()}"),
-                        ],
-                      ),
-                    ),
-                  );
-                },
+            if (userReports.isEmpty) {
+              return const Center(
+                child: Text(
+                  "Aucun signalement trouvé.",
+                  style: TextStyle(color: Colors.white70),
+                ),
               );
-            },
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stack) => Center(
-              child: Text("Erreur lors du chargement des statuts: ${error.toString()}"),
+            }
+
+            return statusesAsyncValue.when(
+              data: (statuses) {
+                return ListView.builder(
+                  itemCount: userReports.length,
+                  itemBuilder: (context, index) {
+                    final report = userReports[index];
+                    final statusName = statuses
+                        .firstWhere((status) => status.id == report.status_id)
+                        .name;
+
+                    return Card(
+                      elevation: 4,
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ListTile(
+                        tileColor: Colors.grey[850], // Fond plus sombre dans les cartes pour un léger contraste
+                        title: Text(
+                          report.description,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 4),
+                            Text(
+                              "Status: $statusName",
+                              style: TextStyle(
+                                color: Colors.blueAccent[100],
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              "Date: ${report.timestamp.toLocal()}",
+                              style: const TextStyle(
+                                color: Colors.white70,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stack) => Center(
+                child: Text(
+                  "Erreur lors du chargement des statuts: ${error.toString()}",
+                  style: const TextStyle(color: Colors.redAccent),
+                ),
+              ),
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stack) => Center(
+            child: Text(
+              "Erreur: ${error.toString()}",
+              style: const TextStyle(color: Colors.redAccent),
             ),
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Center(
-          child: Text("Erreur: ${error.toString()}"),
+          ),
         ),
       ),
     );
