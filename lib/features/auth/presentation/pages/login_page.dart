@@ -12,6 +12,7 @@ class LoginPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
+    final obscurePassword = useState(true);
 
     return Scaffold(
       body: Padding(
@@ -27,7 +28,6 @@ class LoginPage extends HookConsumerWidget {
               ),
             ),
             const SizedBox(height: 40),
-
             TextField(
               controller: emailController,
               decoration: const InputDecoration(
@@ -39,10 +39,19 @@ class LoginPage extends HookConsumerWidget {
             const SizedBox(height: 16),
             TextField(
               controller: passwordController,
-              decoration: const InputDecoration(
+              obscureText: obscurePassword.value,
+              decoration: InputDecoration(
                 hintText: 'Enter your password',
                 labelText: 'Password',
                 prefixIcon: Icon(Icons.lock),
+                suffixIcon: IconButton(
+                  icon: Icon(obscurePassword.value
+                      ? Icons.visibility
+                      : Icons.visibility_off),
+                  onPressed: () {
+                    obscurePassword.value = !obscurePassword.value;
+                  },
+                ),
               ),
             ),
             const SizedBox(height: 20),
@@ -81,45 +90,45 @@ class LoginPage extends HookConsumerWidget {
             const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.black, backgroundColor: Colors.grey[300], // Custom text color
-                    shadowColor: Colors.transparent, // No shadow
-                  ),
-                  onPressed: () {
-                    // Your login with Google logic here
-                  },
-                  child: const Wrap(
-                    children: [
-                      Icon(Icons.g_mobiledata),
-                      SizedBox(width: 10),
-                      Text('Login with Google'),
-                    ],
-                  ),
-                )
-
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.grey[300],
+                  shadowColor: Colors.transparent,
+                ),
+                onPressed: () {
+                  // Logic for Google login
+                },
+                child: const Wrap(
+                  children: [
+                    Icon(Icons.g_mobiledata),
+                    SizedBox(width: 10),
+                    Text('Login with Google'),
+                  ],
+                ),
+              ),
             ),
             const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.black, backgroundColor: Colors.grey[300], // Custom text color
-                    shadowColor: Colors.transparent, // No shadow
-                  ),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.grey[300],
+                  shadowColor: Colors.transparent,
+                ),
                 onPressed: () {
+                  // Logic for Apple login
                 },
                 child: const Wrap(
                   children: [
                     Icon(Icons.apple),
                     SizedBox(width: 10),
-
                     Text('Login with Apple'),
                   ],
-                )
                 ),
               ),
-
+            ),
           ],
         ),
       ),
