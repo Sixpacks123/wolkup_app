@@ -1,4 +1,3 @@
-// map_notifier.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
@@ -13,35 +12,37 @@ class MapNotifier extends StateNotifier<LatLng?> {
       await _checkPermissions();
       Position position = await Geolocator.getCurrentPosition();
       state = LatLng(position.latitude, position.longitude);
+      print("Position initialized: $state");
 
+      // Écouter les mises à jour de la position
       Geolocator.getPositionStream().listen((Position position) {
         state = LatLng(position.latitude, position.longitude);
+        print("Position updated: $state");
       });
     } catch (e) {
-      print("Erreur lors de la récupération de la position : $e");
+      print("Error initializing position: $e");
+      state = null; // Réinitialiser à null en cas d'erreur
     }
   }
 
   Future<void> _checkPermissions() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      throw Exception("Les services de localisation sont désactivés");
+      throw Exception("Location services are disabled.");
     }
 
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.deniedForever) {
-        throw Exception(
-            "Les permissions de localisation sont refusées de manière permanente");
+        throw Exception("Location permissions are permanently denied.");
       }
       if (permission == LocationPermission.denied) {
-        throw Exception("Les permissions de localisation sont refusées");
+        throw Exception("Location permissions are denied.");
       }
     }
   }
 
-  // Ajout de la méthode getCurrentPosition
   Future<LatLng?> getCurrentPosition() async {
     return state;
   }
