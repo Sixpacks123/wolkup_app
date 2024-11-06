@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wolkup_app/features/maps/maps.dart';
+import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/profile/presentation/pages/user_profile_page.dart';
 import '../../features/reporting/presentation/pages/report_status_page.dart';
 
@@ -27,47 +28,85 @@ class _AppLayoutState extends State<AppLayout> {
         index: _currentIndex,
         children: const [
           MapPage(),
+          HomePage(),
+          SizedBox.shrink(),
           UserReportStatusPage(),
-          UserProfilePage(), // Assurez-vous que cette page est correcte
+          UserProfilePage(),
         ],
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              spreadRadius: 5,
-              blurRadius: 10,
-              offset: const Offset(0, -2), // Ombre légère au-dessus de la barre
+              color: Colors.black.withOpacity(0.15),
+              spreadRadius: 3,
+              blurRadius: 8,
+              offset: const Offset(0, -1), // Ombre subtile au-dessus de la barre
             ),
           ],
         ),
-        child: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: _onItemTapped,
-          backgroundColor: Colors.white, // Couleur de fond
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.blueAccent,
-          unselectedItemColor: Colors.grey,
-          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.map_outlined, size: 28),
-              activeIcon: Icon(Icons.map, size: 28),
-              label: 'Maps',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.flag, size: 28),
-              activeIcon: Icon(Icons.flag, size: 28),
-              label: 'Signal',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline, size: 28),
-              activeIcon: Icon(Icons.person, size: 28),
-              label: 'Profile',
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          child: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            onTap: (index) {
+              if (index != 2) { // Ignore le bouton central
+                _onItemTapped(index);
+              }
+            },
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: Theme.of(context).colorScheme.primary,
+            unselectedItemColor: Colors.grey[500],
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.map_outlined, size: 26),
+                activeIcon: Icon(Icons.map, size: 30),
+                label: 'Maps',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.card_giftcard, size: 26),
+                activeIcon: Icon(Icons.card_giftcard, size: 30),
+                label: 'Rewards',
+              ),
+              BottomNavigationBarItem(
+                icon: SizedBox.shrink(), // Espace réservé pour le bouton central
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.flag_outlined, size: 26),
+                activeIcon: Icon(Icons.flag, size: 30),
+                label: 'Signal',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person_outline, size: 26),
+                activeIcon: Icon(Icons.person, size: 30),
+                label: 'Profile',
+              ),
+            ],
+          ),
         ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Action pour le signalement
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const UserReportStatusPage()),
+          );
+        },
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        elevation: 2,
+        child: const Icon(Icons.add, size: 28),
       ),
     );
   }
