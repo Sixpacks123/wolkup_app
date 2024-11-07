@@ -1,9 +1,14 @@
+// map_provider.dart
+
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
-class MapNotifier extends StateNotifier<LatLng?> {
-  MapNotifier() : super(null) {
+class MapProvider extends StateNotifier<LatLng?> {
+  bool _isUserMovingMap = false;
+
+  MapProvider() : super(null) {
     _initializePosition();
   }
 
@@ -12,16 +17,16 @@ class MapNotifier extends StateNotifier<LatLng?> {
       await _checkPermissions();
       Position position = await Geolocator.getCurrentPosition();
       state = LatLng(position.latitude, position.longitude);
-      print("Position initialized: $state");
 
-      // Écouter les mises à jour de la position
       Geolocator.getPositionStream().listen((Position position) {
-        state = LatLng(position.latitude, position.longitude);
-        print("Position updated: $state");
+        if (!_isUserMovingMap) {
+          // Only update position if the user is not actively moving the map
+          state = LatLng(position.latitude, position.longitude);
+        }
       });
     } catch (e) {
       print("Error initializing position: $e");
-      state = null; // Réinitialiser à null en cas d'erreur
+      state = null;
     }
   }
 
@@ -43,7 +48,26 @@ class MapNotifier extends StateNotifier<LatLng?> {
     }
   }
 
+  Future<void> centerMapOnUser(MapController mapController) async {
+    if (state != null) {
+      mapController.move(state!, 13);
+      _isUserMovingMap = false; // Reset the flag to allow automatic updates
+    } else {
+      print("User position not available.");
+    }
+  }
+
+  // Method to indicate user has manually moved the map
+  void onMapMove() {
+    _isUserMovingMap = true;
+  }
+
   Future<LatLng?> getCurrentPosition() async {
     return state;
   }
 }
+
+// Define the provider
+final mapStateProvider = StateNotifierProvider<MapProvider, LatLng?>((ref) {
+  return MapProvider();
+});

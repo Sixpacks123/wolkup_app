@@ -113,8 +113,8 @@ class LoginPage extends HookConsumerWidget {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.grey[300],
+                  foregroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
                   shadowColor: Colors.transparent,
                 ),
                 onPressed: () {

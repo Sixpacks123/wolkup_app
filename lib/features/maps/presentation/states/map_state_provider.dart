@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
-import 'map_notifier.dart';
+import 'map_provider.dart';
 
-final mapStateProvider = StateNotifierProvider<MapNotifier, LatLng?>((ref) {
-  return MapNotifier();
+final mapStateProvider = StateNotifierProvider<MapProvider, LatLng?>((ref) {
+  return MapProvider();
 });
