@@ -86,7 +86,7 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.shadow,
+        title: const Text('Profil'),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings, color: Colors.white),
