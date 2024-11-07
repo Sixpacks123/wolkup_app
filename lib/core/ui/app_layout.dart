@@ -28,9 +28,11 @@ class _AppLayoutState extends State<AppLayout> {
         index: _currentIndex,
         children: const [
           MapPage(),
-          HomePage(),
-          SizedBox.shrink(),
           UserReportStatusPage(),
+
+          SizedBox.shrink(),
+          HomePage(),
+
           UserProfilePage(),
         ],
       ),
@@ -73,18 +75,19 @@ class _AppLayoutState extends State<AppLayout> {
                 label: 'Maps',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.card_giftcard, size: 26),
-                activeIcon: Icon(Icons.card_giftcard, size: 30),
-                label: 'Rewards',
+                icon: Icon(Icons.flag_outlined, size: 26),
+                activeIcon: Icon(Icons.flag, size: 30),
+                label: 'Signal',
               ),
+
               BottomNavigationBarItem(
                 icon: SizedBox.shrink(), // Espace réservé pour le bouton central
                 label: '',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.flag_outlined, size: 26),
-                activeIcon: Icon(Icons.flag, size: 30),
-                label: 'Signal',
+                icon: Icon(Icons.card_giftcard, size: 26),
+                activeIcon: Icon(Icons.card_giftcard, size: 30),
+                label: 'Rewards',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person_outline, size: 26),
