@@ -25,7 +25,6 @@ class _ReportingBottomSheetState extends ConsumerState<ReportingBottomSheet> {
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
         boxShadow: [
           BoxShadow(
@@ -46,7 +45,7 @@ class _ReportingBottomSheetState extends ConsumerState<ReportingBottomSheet> {
             style: Theme.of(context)
                 .textTheme
                 .titleLarge
-                ?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                ?.copyWith( fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
 
