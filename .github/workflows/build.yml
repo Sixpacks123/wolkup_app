@@ -1,50 +1,45 @@
-name: Build for Sonar
+name: Sonar Flutter Example
+
 on:
   push:
     branches:
       - main
-  pull_request:
-    types: [opened, synchronize, reopened]
+
 jobs:
-  sonarcloud:
-    name: SonarCloud
+  analyze:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Get Flutter Version From FVM config
+        id: get_flutter_version
+        run: echo "::set-output name=version::$(cat .fvm/fvm_config.json | jq -r '.flutterSdkVersion')"
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2.12.0
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      #2 Setup Java
-      - name: Set Up Java
-        uses: actions/setup-java@v3.12.0
-        with:
-          distribution: 'oracle'
-          java-version: '17'
-      #3 Setup Flutter
-      - name: Set Up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.24.3'
-          channel: 'stable'
-      #4 Install Dependencies
-      - name: Install Dependencies
+          flutter-version: ${{ steps.get_flutter_version.outputs.version }}
+          channel: stable
+          cache: true
+          cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
+
+      - name: 📦 Install Dependencies
         run: flutter pub get
-      #5 Run flutter tests
-      #- name: Run Flutter Tests
-      #  run: flutter test --coverage
-      #6 Run Sonar cloud scan
-      - name: SonarCloud Scan
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: 🧪 Run Tests
+        run: flutter test --machine --coverage > tests.output
+
+      - name: 🍵 Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: 🪲 Run Sonar
         run: |
-          export SONAR_SCANNER_VERSION=6.2.1.4610
-          export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux-x64
-          curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux-x64.zip
-          unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
-          export PATH=$SONAR_SCANNER_HOME/bin:$PATH
-          export SONAR_SCANNER_OPTS="-server"
-          sonar-scanner \
-            -Dsonar.organization=sixpacks123 \
-            -Dsonar.projectKey=Sixpacks123_wolkup_app\
-            -Dsonar.sources=. \
-            -Dsonar.host.url=https://sonarcloud.io
+          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.1.0.4477.zip
+          unzip sonar-scanner-cli-6.1.0.4477.zip
+          ./sonar-scanner-6.1.0.4477/bin/sonar-scanner \
+            -Dsonar.login=${{secrets.SONAR_TOKEN}} \
+            -Dsonar.host.url=${{secrets.SONAR_HOST_URL}}
