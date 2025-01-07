@@ -44,7 +44,7 @@ jobs:
           export PATH=$SONAR_SCANNER_HOME/bin:$PATH
           export SONAR_SCANNER_OPTS="-server"
           sonar-scanner \
-            -Dsonar.organization=your_organization \
-            -Dsonar.projectKey=your_project_key\
+            -Dsonar.organization=sixpacks123 \
+            -Dsonar.projectKey=Sixpacks123_wolkup_app\
             -Dsonar.sources=. \
             -Dsonar.host.url=https://sonarcloud.io
