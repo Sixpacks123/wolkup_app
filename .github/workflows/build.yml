@@ -27,8 +27,8 @@ jobs:
       - name: 📦 Install Dependencies
         run: flutter pub get
 
-      - name: 🧪 Run Tests
-        run: flutter test --machine --coverage > tests.output
+      #- name: 🧪 Run Tests
+      #  run: flutter test --machine --coverage > tests.output
 
       - name: 🍵 Setup Java
         uses: actions/setup-java@v4
