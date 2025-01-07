@@ -1,45 +1,36 @@
-name: Sonar Flutter Example
+name: Build and SonarQube Scan
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
-  analyze:
+  build:
+    name: Build and SonarQube Scan
     runs-on: ubuntu-latest
+
     steps:
-      - name: 📚 Git Checkout
-        uses: actions/checkout@v4.1.1
-
-      - name: Get Flutter Version From FVM config
-        id: get_flutter_version
-        run: echo "::set-output name=version::$(cat .fvm/fvm_config.json | jq -r '.flutterSdkVersion')"
-
-      - name: 🐦 Setup Flutter
-        uses: subosito/flutter-action@v2.12.0
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          flutter-version: ${{ steps.get_flutter_version.outputs.version }}
-          channel: stable
-          cache: true
-          cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
-      - name: 📦 Install Dependencies
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '2.10.0'  # Specify the Flutter version you are using
+
+      - name: Install dependencies
         run: flutter pub get
 
-      #- name: 🧪 Run Tests
-      #  run: flutter test --machine --coverage > tests.output
+      - name: Run tests
+        run: flutter test
 
-      - name: 🍵 Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: 🪲 Run Sonar
-        run: |
-          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.1.0.4477.zip
-          unzip sonar-scanner-cli-6.1.0.4477.zip
-          ./sonar-scanner-6.1.0.4477/bin/sonar-scanner \
-            -Dsonar.login=${{secrets.SONAR_TOKEN}} \
-            -Dsonar.host.url=${{secrets.SONAR_HOST_URL}}
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
