@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wolkup_app/features/maps/maps.dart';
-import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/profile/presentation/pages/user_profile_page.dart';
 import '../../features/reporting/presentation/pages/report_status_page.dart';
+import '../../features/shop/presentation/pages/shopPage.dart';
 
 class AppLayout extends StatefulWidget {
   const AppLayout({super.key});
@@ -29,16 +29,21 @@ class _AppLayoutState extends State<AppLayout> {
         children: const [
           MapPage(),
           UserReportStatusPage(),
-
-          SizedBox.shrink(),
-          HomePage(),
-
+          SpendWolksPage(),
           UserProfilePage(),
         ],
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.shadow,
+
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(30),
@@ -57,59 +62,41 @@ class _AppLayoutState extends State<AppLayout> {
           child: BottomNavigationBar(
             currentIndex: _currentIndex,
             onTap: (index) {
-              if (index != 2) { // Ignore le bouton central
+              if (index != 9) { // Ignore le bouton central
                 _onItemTapped(index);
               }
             },
             backgroundColor: Colors.transparent,
             elevation: 0,
             type: BottomNavigationBarType.fixed,
-            selectedItemColor: Theme.of(context).colorScheme.primary,
-            unselectedItemColor: Colors.grey[500],
+            selectedItemColor: Theme.of(context).colorScheme.secondary,
+            unselectedItemColor: Colors.white,
             showSelectedLabels: false,
             showUnselectedLabels: false,
             items: const [
               BottomNavigationBarItem(
-                icon: Icon(Icons.map_outlined, size: 26),
-                activeIcon: Icon(Icons.map, size: 30),
+                icon: Icon(Icons.map_outlined, size: 32),
+                activeIcon: Icon(Icons.map, size: 32),
                 label: 'Maps',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.flag_outlined, size: 26),
-                activeIcon: Icon(Icons.flag, size: 30),
+                icon: Icon(Icons.flag_outlined, size: 32),
+                activeIcon: Icon(Icons.flag, size: 32),
                 label: 'Signal',
               ),
-
               BottomNavigationBarItem(
-                icon: SizedBox.shrink(), // Espace réservé pour le bouton central
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.card_giftcard, size: 26),
-                activeIcon: Icon(Icons.card_giftcard, size: 30),
+                icon: Icon(Icons.card_giftcard, size: 32),
+                activeIcon: Icon(Icons.card_giftcard, size: 32),
                 label: 'Rewards',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person_outline, size: 26),
-                activeIcon: Icon(Icons.person, size: 30),
+                icon: Icon(Icons.person_outline, size: 32),
+                activeIcon: Icon(Icons.person, size: 32),
                 label: 'Profile',
               ),
             ],
           ),
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Action pour le signalement
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const UserReportStatusPage()),
-          );
-        },
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        elevation: 2,
-        child: const Icon(Icons.add, size: 28),
       ),
     );
   }
