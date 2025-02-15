@@ -21,7 +21,7 @@ class _ReportDetailsBottomSheetState extends ConsumerState<ReportDetailsBottomSh
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: Colors.white,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
         boxShadow: [
           BoxShadow(
@@ -48,7 +48,7 @@ class _ReportDetailsBottomSheetState extends ConsumerState<ReportDetailsBottomSh
                 style: Theme.of(context)
                     .textTheme
                     .titleLarge
-                    ?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                    ?.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
               ),
             ],
           ),

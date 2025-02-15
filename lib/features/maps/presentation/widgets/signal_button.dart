@@ -10,8 +10,8 @@ class SignalButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: onPressed,
-      backgroundColor: Colors.red,
-      child: const Icon(Icons.add_alert),
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+      child: const Icon(Icons.add_alert, color: Colors.white),
     );
   }
 }

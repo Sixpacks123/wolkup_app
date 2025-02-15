@@ -1,8 +1,6 @@
-// lib/themes/theme_provider.dart
-
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'material_theme.dart';
+import 'theme.dart';
 
 class ThemeNotifier extends StateNotifier<ThemeData> {
   ThemeNotifier() : super(MaterialTheme.lightTheme());
@@ -15,7 +13,7 @@ class ThemeNotifier extends StateNotifier<ThemeData> {
   }
 }
 
-// Provider pour accéder au thème actuel
+// Fournisseur de thème
 final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeData>((ref) {
   return ThemeNotifier();
 });

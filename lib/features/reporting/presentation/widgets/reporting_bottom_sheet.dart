@@ -12,11 +12,14 @@ class ReportingBottomSheet extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ReportingBottomSheet> createState() => _ReportingBottomSheetState();
+  ConsumerState<ReportingBottomSheet> createState() =>
+      _ReportingBottomSheetState();
 }
 
-class _ReportingBottomSheetState extends ConsumerState<ReportingBottomSheet> {
-  final TextEditingController descriptionController = TextEditingController();
+class _ReportingBottomSheetState
+    extends ConsumerState<ReportingBottomSheet> {
+  final TextEditingController descriptionController =
+  TextEditingController();
   final Set<String> selectedCategories = {};
 
   @override
@@ -26,36 +29,51 @@ class _ReportingBottomSheetState extends ConsumerState<ReportingBottomSheet> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 10,
-            offset: const Offset(0, -4), // décalage de l'ombre pour un effet subtil
-          ),
-        ],
       ),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            "Sélectionnez une catégorie",
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith( fontWeight: FontWeight.bold),
+          // Texte personnalisé "Mes signalements"
+          Row(
+            children: [
+              Text(
+                'Sélectionnez ',
+                style: TextStyle(
+                  fontSize: 29,
+                  fontFamily: 'Longreach',
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              Container(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondary,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Text(
+                  'une catégorie',
+                  style: TextStyle(
+                    fontSize: 29,
+                    fontFamily: 'Longreach',
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 16),
 
           // Affichage des catégories en grille
           SizedBox(
-            height: 300, // Limite la hauteur de la grille
+            height: 300,
             child: categoriesAsyncValue.when(
               data: (categories) => GridView.builder(
                 itemCount: categories.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate:
+                const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
@@ -63,7 +81,8 @@ class _ReportingBottomSheetState extends ConsumerState<ReportingBottomSheet> {
                 ),
                 itemBuilder: (context, index) {
                   final category = categories[index];
-                  final isSelected = selectedCategories.contains(category.id);
+                  final isSelected =
+                  selectedCategories.contains(category.id);
 
                   return GestureDetector(
                     onTap: () {
@@ -79,10 +98,12 @@ class _ReportingBottomSheetState extends ConsumerState<ReportingBottomSheet> {
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
                       decoration: BoxDecoration(
-                        color: isSelected ?Theme.of(context).colorScheme.primary : Colors.grey[800],
+                        color: isSelected
+                            ? Theme.of(context).colorScheme.primary
+                            : Colors.white,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: isSelected ? Theme.of(context).colorScheme.primary : Colors.transparent,
+                          color: Theme.of(context).colorScheme.primary,
                           width: 1.5,
                         ),
                       ),
@@ -96,8 +117,11 @@ class _ReportingBottomSheetState extends ConsumerState<ReportingBottomSheet> {
                           Text(
                             category.name,
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.white,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -107,7 +131,8 @@ class _ReportingBottomSheetState extends ConsumerState<ReportingBottomSheet> {
                   );
                 },
               ),
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () =>
+              const Center(child: CircularProgressIndicator()),
               error: (error, stack) => Center(
                 child: Text(
                   "Erreur: ${error.toString()}",
@@ -123,21 +148,26 @@ class _ReportingBottomSheetState extends ConsumerState<ReportingBottomSheet> {
           TextField(
             controller: descriptionController,
             maxLines: 4,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.transparent),
             decoration: InputDecoration(
               filled: true,
-              fillColor: Colors.grey[850],
-              hintText: "Décrivez le problème",
-              hintStyle: const TextStyle(color: Colors.grey),
-              labelText: "Description",
-              labelStyle: const TextStyle(color: Colors.white),
+              fillColor: Colors.white,
+              hintText: "Décrivez votre situation ou le(s) problème(s) rencontré(s)",
+
+              hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+              ),
+              labelText: "Décrivez votre situation ou le(s) problème(s) rencontré(s)",
+              labelStyle: const TextStyle(color: Colors.black, fontSize: 16),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none,
+                borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.primary, width: 2),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide:  BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+                borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.primary, width: 2),
               ),
             ),
           ),
@@ -158,9 +188,10 @@ class _ReportingBottomSheetState extends ConsumerState<ReportingBottomSheet> {
                 if (descriptionController.text.isNotEmpty &&
                     selectedCategories.isNotEmpty) {
                   for (var categoryId in selectedCategories) {
-                    widget.onReportSubmit(categoryId, descriptionController.text);
+                    widget.onReportSubmit(
+                        categoryId, descriptionController.text);
                   }
-                  Navigator.of(context).pop(); // Ferme le BottomSheet après soumission
+                  Navigator.of(context).pop();
                 }
               },
               child: const Text(

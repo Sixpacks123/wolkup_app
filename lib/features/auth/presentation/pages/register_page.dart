@@ -15,20 +15,58 @@ class RegisterPage extends HookConsumerWidget {
     final displayNameController = useTextEditingController();
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-        child: Column(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+      final containerHeight = constraints.maxHeight / 3;
+      return SingleChildScrollView(
+      child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            const SizedBox(height: 60),
-            Center(
-              child: Image.asset(
-                'assets/images/logo.png',
-                height: 120,
+            Container(
+              height: containerHeight,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).colorScheme.primary,
+                    Theme.of(context).colorScheme.shadow,
+
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(49),
+                  bottomRight: Radius.circular(49),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Image.asset(
+                    'assets/images/img.png',
+                    height: 120,
+                    width: 280,
+                  ),
+                ),
               ),
             ),
-            const SizedBox(height: 40),
-            TextField(
+            // Texte Bienvenue
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Text(
+                'inscription',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.primary, // Couleur primaire du thème
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+            child: TextField(
               controller: emailController,
               decoration: const InputDecoration(
                 hintText: 'Enter your email',
@@ -36,8 +74,10 @@ class RegisterPage extends HookConsumerWidget {
                 prefixIcon: Icon(Icons.email),
               ),
             ),
-            const SizedBox(height: 16),
-            TextField(
+        ),
+            Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+            child: TextField(
               controller: passwordController,
               obscureText: true,
               decoration: const InputDecoration(
@@ -46,8 +86,11 @@ class RegisterPage extends HookConsumerWidget {
                 prefixIcon: Icon(Icons.lock),
               ),
             ),
-            const SizedBox(height: 16),
-            TextField(
+          ),
+
+            Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+            child: TextField(
               controller: displayNameController,
               decoration: const InputDecoration(
                 hintText: 'Enter your display name',
@@ -55,8 +98,10 @@ class RegisterPage extends HookConsumerWidget {
                 prefixIcon: Icon(Icons.person),
               ),
             ),
-            const SizedBox(height: 20),
-            SizedBox(
+          ),
+          Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+            child : SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
@@ -69,6 +114,7 @@ class RegisterPage extends HookConsumerWidget {
                 child: const Text('Register'),
               ),
             ),
+          ),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -90,7 +136,9 @@ class RegisterPage extends HookConsumerWidget {
             ),
           ],
         ),
-      ),
+      );
+    },
+    ),
     );
   }
 }

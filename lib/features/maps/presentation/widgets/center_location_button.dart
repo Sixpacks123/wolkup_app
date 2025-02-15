@@ -10,8 +10,9 @@ class CenterLocationButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: onPressed,
-      backgroundColor: Colors.blue,
-      child: const Icon(Icons.my_location),
+      backgroundColor:Theme.of(context).colorScheme.primary,
+
+      child: const Icon(Icons.my_location, color: Colors.white),
     );
   }
 }

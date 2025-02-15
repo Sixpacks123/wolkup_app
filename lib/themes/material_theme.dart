@@ -1,41 +1,55 @@
-// lib/themes/material_theme.dart
-
 import 'package:flutter/material.dart';
+import 'package:wolkup_app/themes/theme.dart';
 
 class MaterialTheme {
-  // Constructeur pour accepter un `TextTheme` si nécessaire
   MaterialTheme(TextTheme textTheme);
 
-  // Thème clair
+  // Light theme
   static ThemeData lightTheme() {
-    final colorScheme = ColorScheme.fromSeed(
-      seedColor: Colors.deepPurple,
-      brightness: Brightness.light,
-    );
+    final colorScheme =  ThemeData().colorScheme;
 
     return ThemeData(
       colorScheme: colorScheme,
       useMaterial3: true,
       scaffoldBackgroundColor: colorScheme.surface,
       elevatedButtonTheme: ElevatedButtonThemeData(
+
         style: ElevatedButton.styleFrom(
-          backgroundColor: colorScheme.primary,
+          textStyle: ThemeData().textTheme.titleMedium,
+          backgroundColor: colorScheme.primaryContainer,
           foregroundColor: colorScheme.onPrimary,
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: WidgetStateProperty.all(colorScheme.secondary),
+          side: WidgetStateProperty.all(BorderSide(color: colorScheme.secondary)),
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
+          backgroundColor: WidgetStateProperty.all(colorScheme.surface),
+          shadowColor: WidgetStateProperty.all(Colors.transparent),
+          elevation: WidgetStateProperty.all(0),
+          overlayColor: WidgetStateProperty.resolveWith<Color?>(
+            (Set<WidgetState> states) {
+              if (states.contains(WidgetState.pressed)) {
+                return colorScheme.secondary.withOpacity(0.12);
+              }
+              return null;
+            },
           ),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: colorScheme.primary,
-        ),
-      ),
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(
-          foregroundColor: colorScheme.secondary,
-          side: BorderSide(color: colorScheme.secondary),
         ),
       ),
       textTheme: const TextTheme(
@@ -85,26 +99,26 @@ class MaterialTheme {
     );
   }
 
-  // Thème sombre
+  // Dark theme
   static ThemeData darkTheme() {
-    final colorScheme = ColorScheme.fromSeed(
-      seedColor: Colors.deepPurple,
-      brightness: Brightness.dark,
-    );
+    final colorScheme = ThemeData().colorScheme;
 
     return ThemeData(
       colorScheme: colorScheme,
       useMaterial3: true,
       scaffoldBackgroundColor: colorScheme.surface,
       elevatedButtonTheme: ElevatedButtonThemeData(
+
         style: ElevatedButton.styleFrom(
-          backgroundColor: colorScheme.primary,
+          textStyle: ThemeData().textTheme.titleMedium,
+          backgroundColor: colorScheme.primaryContainer,
           foregroundColor: colorScheme.onPrimary,
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(16),
           ),
         ),
+
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(

@@ -38,10 +38,6 @@ GoRouter router(RouterRef ref) {
         builder: (context, state) => const SettingsPage(), // Settings page
       ),
       GoRoute(
-        path: '/settings/personal_info',
-        builder: (context, state) => const PersonalInfoPage(), // Personal info page
-      ),
-      GoRoute(
         path: '/profile',
         builder: (context, state)=>   const UserProfilePage(),
       )

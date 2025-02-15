@@ -11,7 +11,8 @@ class MapView extends StatelessWidget {
   final LatLng initialCenter;
   final double initialZoom;
   final List<POI> pois; // List of Points of Interest markers
-  final List<MarkerLayer> additionalLayers; // Dynamic additional layers for reports, etc.
+  final List<MarkerLayer>
+      additionalLayers; // Dynamic additional layers for reports, etc.
   final void Function(dynamic, dynamic) onPositionChanged;
 
   const MapView({
@@ -37,12 +38,11 @@ class MapView extends StatelessWidget {
       children: [
         TileLayer(
           urlTemplate:
-          'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+              'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
           subdomains: const ['a', 'b', 'c'],
         ),
         // Consolidated MarkerLayer for user and POIs
         MarkerLayer(
-
           markers: [
             Marker(
               point: initialCenter,
