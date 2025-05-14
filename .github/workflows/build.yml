@@ -1,10 +1,12 @@
 name: Build
+
 on:
   push:
     branches:
       - main
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   sonarqube:
     name: SonarQube
@@ -13,9 +15,21 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      # The analysis requires to retrieve dependencies and build successfully
+
+      # Setup Flutter environment
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.5'  # Specify the Flutter version you want to use
+
+      # Get dependencies
+      - name: Get dependencies
+        run: flutter pub get
+
+      # Build the project
       - name: Build
-        run: <mark><commands_to_build_your_project></mark>
+        run: flutter build apk  # or flutter build ios, depending on your target platform
+
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
